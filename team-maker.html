@@ -32,7 +32,7 @@
         }
 
         th {
-            background-color: #3b618a; /* Blue background for headers */
+            background-color: #007BFF; /* Blue background for headers */
             color: white; /* White text for headers */
         }
 
@@ -51,11 +51,15 @@
                 width: 100%;
                 display: block;
             }
+            th, td {
+                padding: 4px; /* Reduced padding */
+                font-size: 12px; /* Smaller font size */
+            }
         }
 
         /* Button Styles */
         button {
-            background-color: #007BFF; /* Blue background */
+            background-color: #535f6c; /* Blue background */
             color: white; /* White text */
             padding: 10px 15px; /* Padding */
             border: none; /* Remove border */
@@ -69,10 +73,13 @@
         }
 
         th:first-child, td:first-child { /* Targets the first <th> and <td> in each row */
-            width: 100px; /* Adjust the width as needed */
+            width: 25%; /* Adjusted width for Actions column */
         }
         th:nth-child(2), td:nth-child(2) {
-            width: 30px; /* Reduced width for Name column */
+            width: 35%; /* Adjusted width for Name column */
+        }
+        th:nth-child(3), td:nth-child(3) {
+            width: 40%; /* Adjusted width for Skill Points column */
         }
     </style>
     <script>
