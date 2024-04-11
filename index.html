@@ -41,11 +41,6 @@
             background-color: #f2f2f2; /* Light grey for even rows */
         }
 
-        /* Responsive Table Container */
-        .table-responsive {
-            overflow-x: auto; /* Enables horizontal scrolling on small screens */
-        }
-
         @media screen and (max-width: 768px) {
             table {
                 width: 100%;
@@ -268,7 +263,7 @@
 <body>
     <h1>Team Maker</h1>
     <h2>Players</h2>
-    <div class="table-responsive">
+    <div>
         <button id="addRow">Add Row</button>
         <table border="1">
             <thead>
@@ -285,7 +280,7 @@
     </div>
 
     <h2>Teams</h2>
-    <div class="table-responsive">
+    <div>
         <button id="regenerateTeams">Regenerate Teams</button>
         <table border="1" id="teamsTable">
             <thead>
