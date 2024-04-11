@@ -3,18 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Table with Edit, Add, and Delete</title>
+    <title>Team Maker</title>
     <style>
-        /* Add custom styles here */
-        th:first-child, td:first-child { /* Targets the first <th> and <td> in each row */
-            width: 100px; /* Adjust the width as needed */
+        /* General Page Styles */
+        body {
+            font-family: Arial, sans-serif; /* Use a modern font */
+            margin: 20px;
+            background-color: #f4f4f4; /* Light grey background */
+            color: #333; /* Dark grey text */
         }
-        th:nth-child(2), td:nth-child(2) {
-            width: 80px; /* Reduced width for Name column */
+
+        h1 {
+            color: #005A9C; /* A shade of blue for headings */
+            text-align: center; /* Center-align the page title */
         }
-        /* Responsive table */
+
+        /* Table Styles */
+        table {
+            border-collapse: collapse; /* Remove gaps between borders */
+            width: 100%; /* Full width tables */
+            margin-bottom: 20px; /* Space below tables */
+        }
+
+        th, td {
+            border: 1px solid #ddd; /* Light grey border */
+            text-align: left; /* Align text to the left */
+            padding: 8px; /* Padding inside cells */
+        }
+
+        th {
+            background-color: #3b618a; /* Blue background for headers */
+            color: white; /* White text for headers */
+        }
+
+        /* Zebra Stripes for Rows */
+        tr:nth-child(even) {
+            background-color: #f2f2f2; /* Light grey for even rows */
+        }
+
+        /* Responsive Table Container */
         .table-responsive {
-            overflow-x: auto; /* Enables horizontal scrolling */
+            overflow-x: auto; /* Enables horizontal scrolling on small screens */
         }
 
         @media screen and (max-width: 768px) {
@@ -22,6 +51,28 @@
                 width: 100%;
                 display: block;
             }
+        }
+
+        /* Button Styles */
+        button {
+            background-color: #007BFF; /* Blue background */
+            color: white; /* White text */
+            padding: 10px 15px; /* Padding */
+            border: none; /* Remove border */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            margin-right: 5px; /* Space between buttons */
+        }
+
+        button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        th:first-child, td:first-child { /* Targets the first <th> and <td> in each row */
+            width: 100px; /* Adjust the width as needed */
+        }
+        th:nth-child(2), td:nth-child(2) {
+            width: 30px; /* Reduced width for Name column */
         }
     </style>
     <script>
@@ -208,6 +259,7 @@
     </script>
 </head>
 <body>
+    <h1>Team Maker</h1>
     <h2>Players</h2>
     <div class="table-responsive">
         <button id="addRow">Add Row</button>
