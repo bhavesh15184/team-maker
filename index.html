@@ -118,7 +118,7 @@
             // Function to distribute players into teams
             function distributePlayersIntoTeams() {
                 const minPlayersPerTeam = 6;
-                const maxPlayersPerTeam = 9;
+                const maxPlayersPerTeam = 9;  
                 const players = []; // This will hold player data
   
                 // Collect player data from the Players table
@@ -188,7 +188,7 @@
             distributePlayersIntoTeams();
 
             // Attach the distributePlayersIntoTeams function to the Regenerate Teams button
-            document.getElementById('regenerateTeams').addEventListener('click', function() {
+            document.getElementById('generateTeams').addEventListener('click', function() {
                 distributePlayersIntoTeams();
             });
 
@@ -286,7 +286,7 @@
 
     <h2>Teams</h2>
     <div>
-        <button id="regenerateTeams">Regenerate Teams</button>
+        <button id="generateTeams">Generate Teams</button>
         <table border="1" id="teamsTable">
             <thead>
                 <tr id="teamsHeader">
