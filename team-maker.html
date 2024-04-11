@@ -7,7 +7,10 @@
     <style>
         /* Add custom styles here */
         th:first-child, td:first-child { /* Targets the first <th> and <td> in each row */
-            width: 50px; /* Adjust the width as needed */
+            width: 100px; /* Adjust the width as needed */
+        }
+        th:nth-child(2), td:nth-child(2) {
+            width: 80px; /* Reduced width for Name column */
         }
         /* Responsive table */
         .table-responsive {
@@ -27,27 +30,27 @@
 
             // Pre-populate the table with CSV values
             const csvData = [
-                "Bhavesh, Yes, 7",
-                "Rohit, Yes, 9",
-                "Rodney, Yes, 9",
-                "Kartik, Yes, 8",
-                "Abhishek, Yes, 9",
-                "Sunny, Yes, 10",
-                "Pushpa, Yes, 7",
-                "Dharmesh, Yes, 8",
-                "Anshuman, Yes, 7",
-                "Amit, Yes, 7",
-                "Ambuj, Yes, 6",
-                "Samiksha, Yes, 7",
-                "Kapil, Yes, 6",
-                "Arush, Yes, 9",
-                "Nikhil, Yes, 7",
-                "Aditya, Yes, 6",
+                "Bhavesh, 7",
+                "Rohit, 9",
+                "Rodney, 9",
+                "Kartik, 8",
+                "Abhishek, 9",
+                "Sunny, 10",
+                "Pushpa, 7",
+                "Dharmesh, 8",
+                "Anshuman, 7",
+                "Amit, 7",
+                "Ambuj, 6",
+                "Samiksha, 7",
+                "Kapil, 6",
+                "Arush, 9",
+                "Nikhil, 7",
+                "Aditya, 6",
             ];
 
             csvData.forEach(function(row) {
                 const rowData = row.split(", ");
-                addRow(rowData[0], rowData[1], rowData[2]);
+                addRow(rowData[0], rowData[1]);
             });
 
             document.getElementById('addRow').addEventListener('click', function() {
@@ -62,7 +65,7 @@
   
                 // Collect player data from the Players table
                 document.querySelectorAll('#tableBody tr').forEach(row => {
-                    const name = row.cells[0].querySelector('input').value.trim();
+                    const name = row.cells[1].querySelector('input').value.trim();
                     const skillPoints = parseInt(row.cells[2].querySelector('select').value);
                     // Only add player if the name is not empty
                     if (name !== '') {
@@ -178,29 +181,24 @@
             document.querySelectorAll('th').forEach((header, index) => {
                 header.addEventListener('click', () => {
                     // Determine if the column should be sorted as numeric values or text
-                    const isNumeric = index === 2; // Assuming the "Skill Points" column is the third one (index 2)
+                    const isNumeric = index === 2; // Assuming the "Skill Points" column is now the third one (index 2)
                     sortTable(index, isNumeric);
                 });
             });
         });
 
-        function addRow(name = '', available = 'Yes', skillPoints = '1') {
+        function addRow(name = '', skillPoints = '1') {
             const tableBody = document.getElementById('tableBody');
             const row = tableBody.insertRow();
-            const cell1 = row.insertCell(0);
-            const cell2 = row.insertCell(1);
-            const cell3 = row.insertCell(2);
-            const cell4 = row.insertCell(3);
+            const cell1 = row.insertCell(0); // Actions
+            const cell2 = row.insertCell(1); // Name
+            const cell3 = row.insertCell(2); // Skill Points
 
-            cell1.innerHTML = `<input type="text" name="name" value="${name}" />`;
-            cell2.innerHTML = `<select name="available">
-                                    <option value="Yes" ${available === 'Yes' ? 'selected' : ''}>Yes</option>
-                                    <option value="No" ${available === 'No' ? 'selected' : ''}>No</option>
-                               </select>`;
+            cell1.innerHTML = '<button onclick="deleteRow(this)">Delete</button>';
+            cell2.innerHTML = `<input type="text" name="name" value="${name}" />`;
             cell3.innerHTML = `<select name="skillPoints">` + 
                                 Array.from({length: 10}, (_, i) => `<option value="${i+1}" ${skillPoints == i+1 ? 'selected' : ''}>${i+1}</option>`).join('') + 
                                `</select>`;
-            cell4.innerHTML = '<button onclick="deleteRow(this)">Delete</button>';
         }
 
         function deleteRow(btn) {
@@ -216,10 +214,9 @@
         <table border="1">
             <thead>
                 <tr>
+                    <th>Actions</th> <!-- Moved to first -->
                     <th>Name</th>
-                    <th>Available?</th>
                     <th>Skill Points</th>
-                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
