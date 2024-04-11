@@ -1,4 +1,4 @@
-# team-maker
+# A simple HTML page to create teams from a group of players. It uses the skill points assigned to players to distribute them into teams equally. For now, this is used to create Vollyball teams but its easily extendable to other sports.
 
 # Interactive Table with Edit, Add, and Delete
 
