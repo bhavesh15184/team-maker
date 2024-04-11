@@ -41,15 +41,26 @@
             background-color: #f2f2f2; /* Light grey for even rows */
         }
 
+        /* Responsive Table Container */
+        .table-responsive {
+            overflow-x: auto; /* Enables horizontal scrolling on small screens */
+        }
+
         @media screen and (max-width: 768px) {
-            table {
-                width: 100%;
-                display: block;
-            }
             th, td {
                 padding: 4px; /* Reduced padding */
                 font-size: 12px; /* Smaller font size */
             }
+        }
+
+        th:first-child, td:first-child { /* Actions column */
+            width: 20%; /* Adjust based on content */
+        }
+        th:nth-child(2), td:nth-child(2) { /* Name column */
+            width: 20%; /* Adjusted width for Name column */
+        }
+        th:nth-child(3), td:nth-child(3) { /* Skill Points column */
+            width: 60%; /* Adjusted width for Skill Points column */
         }
 
         /* Button Styles */
@@ -61,21 +72,11 @@
             border-radius: 5px; /* Rounded corners */
             cursor: pointer; /* Pointer cursor on hover */
             margin-right: 5px; /* Space between buttons */
-            margin-bottom: 10px;
+            margin-bottom: 20px; /* Adds space below the Add Row button */
         }
 
         button:hover {
             background-color: #0056b3; /* Darker blue on hover */
-        }
-
-        th:first-child, td:first-child { /* Targets the first <th> and <td> in each row */
-            width: 25%; /* Adjusted width for Actions column */
-        }
-        th:nth-child(2), td:nth-child(2) {
-            width: 35%; /* Adjusted width for Name column */
-        }
-        th:nth-child(3), td:nth-child(3) {
-            width: 40%; /* Adjusted width for Skill Points column */
         }
     </style>
     <script>
@@ -83,7 +84,7 @@
             const tableBody = document.getElementById('tableBody');
 
             // Pre-populate the table with CSV values
-            const csvData = [
+            const DEFAULT_PLAYERS_CSV = [
                 "Rohit, 9",
                 "Rodney, 9",
                 "Abhishek, 9",
@@ -106,7 +107,11 @@
                 "Aditya, 6",
             ];
 
-            csvData.forEach(function(row) {
+            const MIN_PLAYERS_PER_TEAM = 6;
+            const MAX_PLAYERS_PER_TEAM = 9;  
+            const MAX_PLAYERS_FOR_3_TEAMS = 15;
+
+            DEFAULT_PLAYERS_CSV.forEach(function(row) {
                 const rowData = row.split(", ");
                 addRow(rowData[0], rowData[1]);
             });
@@ -117,10 +122,14 @@
 
             // Function to distribute players into teams
             function distributePlayersIntoTeams() {
-                const minPlayersPerTeam = 6;
-                const maxPlayersPerTeam = 9;  
                 const players = []; // This will hold player data
   
+                // Set the content of the span element to display the minimum & maximum players per team
+                const minPlayersSpan = document.getElementById('minPlayersSpan');
+                minPlayersSpan.textContent = `Min Players: ${MIN_PLAYERS_PER_TEAM}`;
+                const maxPlayersSpan = document.getElementById('maxPlayersSpan');
+                maxPlayersSpan.textContent = `Max Players: ${MAX_PLAYERS_PER_TEAM}`;
+
                 // Collect player data from the Players table
                 document.querySelectorAll('#tableBody tr').forEach(row => {
                     const name = row.cells[1].querySelector('input').value.trim();
@@ -139,7 +148,7 @@
                 if (players.length > 15) {
                     numberOfTeams = 3; // Create 3 teams if more than 15 players
                 } else {
-                    numberOfTeams = Math.ceil(players.length / maxPlayersPerTeam);
+                    numberOfTeams = Math.ceil(players.length / MAX_PLAYERS_PER_TEAM);
                 }
                 const teams = Array.from({ length: numberOfTeams }, () => []);
 
@@ -268,7 +277,7 @@
 <body>
     <h1>Team Maker</h1>
     <h2>Players</h2>
-    <div>
+    <div class="table-responsive">
         <button id="addRow">Add Row</button>
         <table border="1">
             <thead>
@@ -287,6 +296,9 @@
     <h2>Teams</h2>
     <div>
         <button id="generateTeams">Generate Teams</button>
+        <span id="minPlayersSpan">Min Players: </span>
+        <span>, </span>
+        <span id="maxPlayersSpan">Max Players: </span>
         <table border="1" id="teamsTable">
             <thead>
                 <tr id="teamsHeader">
