@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Table with Edit, Add, and Delete</title>
+    <style>
+        /* Add custom styles here */
+        th:first-child, td:first-child { /* Targets the first <th> and <td> in each row */
+            width: 50px; /* Adjust the width as needed */
+        }
+        /* Responsive table */
+        .table-responsive {
+            overflow-x: auto; /* Enables horizontal scrolling */
+        }
+
+        @media screen and (max-width: 768px) {
+            table {
+                width: 100%;
+                display: block;
+            }
+        }
+    </style>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const tableBody = document.getElementById('tableBody');
@@ -194,32 +211,36 @@
 </head>
 <body>
     <h2>Players</h2>
-    <button id="addRow">Add Row</button>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Name</th>
-                <th>Available?</th>
-                <th>Skill Points</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="tableBody">
-            <!-- Rows will be added here -->
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <button id="addRow">Add Row</button>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Available?</th>
+                    <th>Skill Points</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <!-- Rows will be added here -->
+            </tbody>
+        </table>
+    </div>
 
     <h2>Teams</h2>
-    <button id="regenerateTeams">Regenerate Teams</button>
-    <table border="1" id="teamsTable">
-        <thead>
-            <tr id="teamsHeader">
-                <!-- Team headers will be added here dynamically -->
-            </tr>
-        </thead>
-        <tbody id="teamsBody">
-            <!-- Team members will be added here dynamically -->
-        </tbody>
-    </table>
+    <div class="table-responsive">
+        <button id="regenerateTeams">Regenerate Teams</button>
+        <table border="1" id="teamsTable">
+            <thead>
+                <tr id="teamsHeader">
+                    <!-- Team headers will be added here dynamically -->
+                </tr>
+            </thead>
+            <tbody id="teamsBody">
+                <!-- Team members will be added here dynamically -->
+            </tbody>
+        </table>
+    </div>
 </body>
 </html>
