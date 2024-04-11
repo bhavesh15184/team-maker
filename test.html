@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Table with Edit, Add, and Delete</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tableBody = document.getElementById('tableBody');
+
+            // Pre-populate the table with CSV values
+            const csvData = [
+                "Bhavesh, Yes, 7",
+                "Rohit, Yes, 9",
+                "Rodney, Yes, 9",
+                "Kartik, Yes, 8",
+                "Abhishek, Yes, 9",
+                "Sunny, Yes, 10",
+                "Pushpa, Yes, 7",
+                "Dharmesh, Yes, 8",
+                "Anshuman, Yes, 7",
+                "Amit, Yes, 7",
+                "Ambuj, Yes, 6",
+                "Samiksha, Yes, 7",
+                "Kapil, Yes, 6",
+                "Arush, Yes, 9",
+                "Nikhil, Yes, 7",
+                "Aditya, Yes, 6",
+            ];
+
+            csvData.forEach(function(row) {
+                const rowData = row.split(", ");
+                addRow(rowData[0], rowData[1], rowData[2]);
+            });
+
+            document.getElementById('addRow').addEventListener('click', function() {
+                addRow();
+            });
+
+            // Function to distribute players into teams
+            function distributePlayersIntoTeams() {
+                const minPlayersPerTeam = 6;
+                const maxPlayersPerTeam = 9;
+                const players = []; // This will hold player data
+  
+                // Collect player data from the Players table
+                document.querySelectorAll('#tableBody tr').forEach(row => {
+                    const name = row.cells[0].querySelector('input').value.trim();
+                    const skillPoints = parseInt(row.cells[2].querySelector('select').value);
+                    // Only add player if the name is not empty
+                    if (name !== '') {
+                        players.push({ name, skillPoints });
+                    }
+                });
+
+                // Sort players by skill points
+                players.sort((a, b) => a.skillPoints - b.skillPoints);
+
+                // Calculate the number of teams needed
+                let numberOfTeams;
+                if (players.length > 15) {
+                    numberOfTeams = 3; // Create 3 teams if more than 15 players
+                } else {
+                    numberOfTeams = Math.ceil(players.length / maxPlayersPerTeam);
+                }
+                const teams = Array.from({ length: numberOfTeams }, () => []);
+
+                // Distribute players into teams
+                players.forEach((player, index) => {
+                    teams[index % numberOfTeams].push(player);
+                });
+
+                // Update the Teams table
+                updateTeamsTable(teams);
+            }
+
+            // Function to update the Teams table
+            function updateTeamsTable(teams) {
+                const teamsHeader = document.getElementById('teamsHeader');
+                const teamsBody = document.getElementById('teamsBody');
+
+                // Clear existing content
+                teamsHeader.innerHTML = '';
+                teamsBody.innerHTML = '';
+
+                // Create headers for each team and calculate total skill points
+                teams.forEach((team, index) => {
+                    const totalSkillPoints = team.reduce((acc, player) => acc + player.skillPoints, 0);
+                    const th = document.createElement('th');
+                    th.textContent = `Team ${index + 1} (${totalSkillPoints} points)`;
+                    teamsHeader.appendChild(th);
+                });
+
+                // Find the maximum number of rows needed
+                const maxRows = Math.max(...teams.map(team => team.length));
+
+                // Add players to the table
+                for (let row = 0; row < maxRows; row++) {
+                    const tr = document.createElement('tr');
+                    teams.forEach(team => {
+                        const td = document.createElement('td');
+                        td.textContent = team[row] ? team[row].name : '';
+                        tr.appendChild(td);
+                    });
+                    teamsBody.appendChild(tr);
+                }
+            }
+
+            // Example usage
+            distributePlayersIntoTeams();
+
+            // Attach the distributePlayersIntoTeams function to the Regenerate Teams button
+            document.getElementById('regenerateTeams').addEventListener('click', function() {
+                distributePlayersIntoTeams();
+            });
+
+            let sortDirection = {}; // Object to keep track of each column's sort direction
+
+            // Function to sort the table
+            function sortTable(columnIndex, isNumeric) {
+                const tableBody = document.getElementById('tableBody');
+                let rows = Array.from(tableBody.querySelectorAll('tr'));
+
+                // Toggle sort direction or set to ascending if first time sorting this column
+                if (sortDirection[columnIndex] === 'asc') {
+                    sortDirection[columnIndex] = 'desc';
+                } else {
+                    sortDirection[columnIndex] = 'asc';
+                }
+
+                // Sort rows based on the content of the specified column
+                rows.sort((a, b) => {
+                    const aValue = isNumeric ? parseInt(a.cells[columnIndex].querySelector('input, select').value) : a.cells[columnIndex].querySelector('input, select').value.toLowerCase();
+                    const bValue = isNumeric ? parseInt(b.cells[columnIndex].querySelector('input, select').value) : b.cells[columnIndex].querySelector('input, select').value.toLowerCase();
+
+                    if (aValue < bValue) return sortDirection[columnIndex] === 'asc' ? -1 : 1;
+                    if (aValue > bValue) return sortDirection[columnIndex] === 'asc' ? 1 : -1;
+                    return 0;
+                });
+
+                // Reattach sorted rows to the table body
+                rows.forEach(row => tableBody.appendChild(row));
+
+                // Update column headers to indicate sort direction
+                updateSortIndicator(columnIndex, sortDirection[columnIndex]);
+            }
+
+            // Function to update sort indicators on column headers
+            function updateSortIndicator(sortedColumnIndex, direction) {
+                document.querySelectorAll('th').forEach((header, index) => {
+                    // Remove existing sort indicators
+                    header.innerHTML = header.innerHTML.replace(' 🔽', '').replace(' 🔼', '');
+                    // Add sort indicator to the currently sorted column
+                    if (index === sortedColumnIndex) {
+                        header.innerHTML += direction === 'asc' ? ' 🔼' : ' 🔽';
+                    }
+                });
+            }
+
+            // Attach sort function to table headers
+            document.querySelectorAll('th').forEach((header, index) => {
+                header.addEventListener('click', () => {
+                    // Determine if the column should be sorted as numeric values or text
+                    const isNumeric = index === 2; // Assuming the "Skill Points" column is the third one (index 2)
+                    sortTable(index, isNumeric);
+                });
+            });
+        });
+
+        function addRow(name = '', available = 'Yes', skillPoints = '1') {
+            const tableBody = document.getElementById('tableBody');
+            const row = tableBody.insertRow();
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            const cell3 = row.insertCell(2);
+            const cell4 = row.insertCell(3);
+
+            cell1.innerHTML = `<input type="text" name="name" value="${name}" />`;
+            cell2.innerHTML = `<select name="available">
+                                    <option value="Yes" ${available === 'Yes' ? 'selected' : ''}>Yes</option>
+                                    <option value="No" ${available === 'No' ? 'selected' : ''}>No</option>
+                               </select>`;
+            cell3.innerHTML = `<select name="skillPoints">` + 
+                                Array.from({length: 10}, (_, i) => `<option value="${i+1}" ${skillPoints == i+1 ? 'selected' : ''}>${i+1}</option>`).join('') + 
+                               `</select>`;
+            cell4.innerHTML = '<button onclick="deleteRow(this)">Delete</button>';
+        }
+
+        function deleteRow(btn) {
+            const row = btn.parentNode.parentNode;
+            row.parentNode.removeChild(row);
+        }
+    </script>
+</head>
+<body>
+    <h2>Players</h2>
+    <button id="addRow">Add Row</button>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Available?</th>
+                <th>Skill Points</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody">
+            <!-- Rows will be added here -->
+        </tbody>
+    </table>
+
+    <h2>Teams</h2>
+    <button id="regenerateTeams">Regenerate Teams</button>
+    <table border="1" id="teamsTable">
+        <thead>
+            <tr id="teamsHeader">
+                <!-- Team headers will be added here dynamically -->
+            </tr>
+        </thead>
+        <tbody id="teamsBody">
+            <!-- Team members will be added here dynamically -->
+        </tbody>
+    </table>
+</body>
+</html>
