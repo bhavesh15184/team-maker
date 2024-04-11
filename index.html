@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,80 +8,120 @@
     <style>
         /* General Page Styles */
         body {
-            font-family: Arial, sans-serif; /* Use a modern font */
+            font-family: Arial, sans-serif;
+            /* Use a modern font */
             margin: 20px;
-            background-color: #f4f4f4; /* Light grey background */
-            color: #333; /* Dark grey text */
+            background-color: #f4f4f4;
+            /* Light grey background */
+            color: #333;
+            /* Dark grey text */
         }
 
         h1 {
-            color: #005A9C; /* A shade of blue for headings */
-            text-align: center; /* Center-align the page title */
+            color: #005A9C;
+            /* A shade of blue for headings */
+            text-align: center;
+            /* Center-align the page title */
         }
 
         /* Table Styles */
         table {
-            border-collapse: collapse; /* Remove gaps between borders */
-            width: 100%; /* Full width tables */
-            margin-bottom: 20px; /* Space below tables */
+            border-collapse: collapse;
+            /* Remove gaps between borders */
+            width: 100%;
+            /* Full width tables */
+            margin-bottom: 20px;
+            /* Space below tables */
         }
 
-        th, td {
-            border: 1px solid #ddd; /* Light grey border */
-            text-align: left; /* Align text to the left */
-            padding: 8px; /* Padding inside cells */
+        th,
+        td {
+            border: 1px solid #ddd;
+            /* Light grey border */
+            text-align: left;
+            /* Align text to the left */
+            padding: 8px;
+            /* Padding inside cells */
         }
 
         th {
-            background-color: #007BFF; /* Blue background for headers */
-            color: white; /* White text for headers */
+            background-color: #007BFF;
+            /* Blue background for headers */
+            color: white;
+            /* White text for headers */
         }
 
         /* Zebra Stripes for Rows */
         tr:nth-child(even) {
-            background-color: #f2f2f2; /* Light grey for even rows */
+            background-color: #f2f2f2;
+            /* Light grey for even rows */
         }
 
         /* Responsive Table Container */
         .table-responsive {
-            overflow-x: auto; /* Enables horizontal scrolling on small screens */
+            overflow-x: auto;
+            /* Enables horizontal scrolling on small screens */
         }
 
         @media screen and (max-width: 768px) {
-            th, td {
-                padding: 4px; /* Reduced padding */
-                font-size: 12px; /* Smaller font size */
+
+            th,
+            td {
+                padding: 4px;
+                /* Reduced padding */
+                font-size: 12px;
+                /* Smaller font size */
             }
         }
 
-        th:first-child, td:first-child { /* Actions column */
-            width: 20%; /* Adjust based on content */
+        th:first-child,
+        td:first-child {
+            /* Actions column */
+            width: 20%;
+            /* Adjust based on content */
         }
-        th:nth-child(2), td:nth-child(2) { /* Name column */
-            width: 20%; /* Adjusted width for Name column */
+
+        th:nth-child(2),
+        td:nth-child(2) {
+            /* Name column */
+            width: 20%;
+            /* Adjusted width for Name column */
         }
-        th:nth-child(3), td:nth-child(3) { /* Skill Points column */
-            width: 60%; /* Adjusted width for Skill Points column */
+
+        th:nth-child(3),
+        td:nth-child(3) {
+            /* Skill Points column */
+            width: 60%;
+            /* Adjusted width for Skill Points column */
         }
 
         /* Button Styles */
         button {
-            background-color: #535f6c; /* Blue background */
-            color: white; /* White text */
-            padding: 10px 15px; /* Padding */
-            border: none; /* Remove border */
-            border-radius: 5px; /* Rounded corners */
-            cursor: pointer; /* Pointer cursor on hover */
-            margin-right: 5px; /* Space between buttons */
-            margin-bottom: 20px; /* Adds space below the Add Row button */
+            background-color: #535f6c;
+            /* Blue background */
+            color: white;
+            /* White text */
+            padding: 10px 15px;
+            /* Padding */
+            border: none;
+            /* Remove border */
+            border-radius: 5px;
+            /* Rounded corners */
+            cursor: pointer;
+            /* Pointer cursor on hover */
+            margin-right: 5px;
+            /* Space between buttons */
+            margin-bottom: 20px;
+            /* Adds space below the Add Row button */
         }
 
         button:hover {
-            background-color: #0056b3; /* Darker blue on hover */
+            background-color: #0056b3;
+            /* Darker blue on hover */
         }
     </style>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const tableBody = document.getElementById('tableBody');
 
             // Pre-populate the table with CSV values
@@ -108,22 +149,22 @@
             ];
 
             const MIN_PLAYERS_PER_TEAM = 6;
-            const MAX_PLAYERS_PER_TEAM = 9;  
+            const MAX_PLAYERS_PER_TEAM = 9;
             const MAX_PLAYERS_FOR_3_TEAMS = 15;
 
-            DEFAULT_PLAYERS_CSV.forEach(function(row) {
+            DEFAULT_PLAYERS_CSV.forEach(function (row) {
                 const rowData = row.split(", ");
                 addRow(rowData[0], rowData[1]);
             });
 
-            document.getElementById('addRow').addEventListener('click', function() {
+            document.getElementById('addRow').addEventListener('click', function () {
                 addRow();
             });
 
             // Function to distribute players into teams
             function distributePlayersIntoTeams() {
                 const players = []; // This will hold player data
-  
+
                 // Set the content of the span element to display the minimum & maximum players per team
                 const minPlayersSpan = document.getElementById('minPlayersSpan');
                 minPlayersSpan.textContent = `Min Players: ${MIN_PLAYERS_PER_TEAM}`;
@@ -197,7 +238,7 @@
             distributePlayersIntoTeams();
 
             // Attach the distributePlayersIntoTeams function to the Regenerate Teams button
-            document.getElementById('generateTeams').addEventListener('click', function() {
+            document.getElementById('generateTeams').addEventListener('click', function () {
                 distributePlayersIntoTeams();
             });
 
@@ -263,9 +304,9 @@
 
             cell1.innerHTML = '<button onclick="deleteRow(this)">Delete</button>';
             cell2.innerHTML = `<input type="text" name="name" value="${name}" />`;
-            cell3.innerHTML = `<select name="skillPoints">` + 
-                                Array.from({length: 10}, (_, i) => `<option value="${i+1}" ${skillPoints == i+1 ? 'selected' : ''}>${i+1}</option>`).join('') + 
-                               `</select>`;
+            cell3.innerHTML = `<select name="skillPoints">` +
+                Array.from({ length: 10 }, (_, i) => `<option value="${i + 1}" ${skillPoints == i + 1 ? 'selected' : ''}>${i + 1}</option>`).join('') +
+                `</select>`;
         }
 
         function deleteRow(btn) {
@@ -274,9 +315,11 @@
         }
     </script>
 </head>
+
 <body>
-    <h1>Team Maker</h1>
-    <span style="text-align: center">A simple page to create teams from a group of players. It uses the skill points assigned to players to create balanced teams.</span>
+    <h1>🏐🏀⚽🏏 Team Maker 🏐🏀⚽🏏</h1>
+    <span style="text-align: center">A simple page to create teams from a group of players. It uses the skill points
+        assigned to players to create balanced teams.</span>
     <div>
         <span>--------------------------------------------------------</span>
     </div>
@@ -314,5 +357,11 @@
             </tbody>
         </table>
     </div>
+
+    <footer>
+        <a href="https://github.com/bhavesh15184/team-maker">Check out the source code</a>
+    </footer>
+
 </body>
+
 </html>
